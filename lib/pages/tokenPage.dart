@@ -12,6 +12,20 @@ class TokenPage extends StatefulWidget {
 class _TokenPageState extends State<TokenPage> {
   final tokenController = TextEditingController();
 
+  String? token = "";
+
+  Future<void> _getToken() async {
+    token = await getToken();
+    token ??= "";
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getToken();
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -48,19 +62,19 @@ class _TokenPageState extends State<TokenPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    if (tokenController.text.isEmpty && getToken().toString().isNotEmpty) {
+                    if (token!.isNotEmpty) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const CategoryPage()),
                       );
-                    } else if (tokenController.text.isEmpty && getToken().toString().isEmpty) {
+                    } else if (tokenController.text.isEmpty && token!.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text("Токен не может быть пустым")),
                       );
                     } else {
-                      setToken(tokenController.text);
+                      setToken(tokenController.text.trim());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

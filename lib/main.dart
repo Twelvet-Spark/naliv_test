@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:naliv_test/api.dart';
 import 'package:naliv_test/pages/categoriesPage.dart';
@@ -26,15 +28,36 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    if (getToken().toString().isEmpty) {
-      return const TokenPage();
-    } else {
-      return const CategoryPage();
-    }
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+
+  String? token = "";
+
+  Future<void> _getToken() async {
+    token = await getToken();
+    token ??= "";
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getToken();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+      clearToken();
+      if (token!.isEmpty) {
+        return const TokenPage();
+      } else {
+        return const CategoryPage();
+      }
+    }
 }

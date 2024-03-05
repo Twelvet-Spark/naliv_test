@@ -7,14 +7,11 @@ var URL_API = 'naliv.kz';
 
 Future<List> fetchCategories() async {
   String? token = await getToken();
-  if (token.isEmpty) {
+  if (token == null) {
     return [];
   }
-  print("YES");
   var url = Uri.https(URL_API, 'api/category/get.php');
-  var result = await http
-      .post(url, headers: {"Content-Type": "application/json", "AUTH": token});
-  print(result.body);
+  var result = await http.post(url, encoding: const Utf8Codec(), headers: {"Content-Type": "application/json", "AUTH": token});
   List data = json.decode(utf8.decode(result.bodyBytes));
   // List data = json.decode(result.body);
   print(data);
@@ -26,9 +23,14 @@ void setToken(String token) async {
   prefs.setString("token", token);
 }
 
-Future<String> getToken() async {
+Future<String?> getToken() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString("token") ?? "";
+  if (prefs.containsKey("token")) {
+    String? token = prefs.getString("token");
+    return token;
+  } else {
+    return "";
+  }
 }
 
 void clearToken() async {
