@@ -21,7 +21,6 @@ class _TokenPageState extends State<TokenPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getToken();
   }
