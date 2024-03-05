@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:naliv_test/api.dart';
 import 'package:naliv_test/pages/categoriesPage.dart';
